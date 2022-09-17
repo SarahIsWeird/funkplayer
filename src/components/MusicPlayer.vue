@@ -63,7 +63,7 @@ export default {
             this.$refs.audio.fastSeek(time);
         },
         async updateSongs() {
-            const response = await fetch('http://localhost:8081/songs', {
+            const response = await fetch('http://localhost:8270/songs', {
                 mode: 'cors',
             });
 
@@ -89,7 +89,7 @@ export default {
 
             if (song === undefined) return;
 
-            this.$refs.audio.src = `http://localhost:8081/songs/${song.id}/stream`;
+            this.$refs.audio.src = `http://localhost:8270/songs/${song.id}/stream`;
             this.$refs.audio.volume = this.volume / 100.0;
 
             if (this.pageJustLoaded) {
