@@ -2,7 +2,7 @@
     <SongList
         :songs="songs"
         :on-song-selected="i => currentSong = i"
-        @onSongsShouldUpdate="updateSongs" />
+        @songsShouldUpdate="updateSongs" />
     <ControlBar
         :song="songs[currentSong]"
         :current-time="currentTime"

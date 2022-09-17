@@ -1,6 +1,6 @@
 <template>
     <div class="songList">
-        <form class="songCreation">
+        <form class="songCreation" @submit="addSong">
             <input type="text" placeholder="Name" v-model="name" />
             <input type="text" placeholder="Artist" v-model="artist" />
             <input type="text" placeholder="YouTube link" v-model="youtubeLink" />
@@ -22,9 +22,9 @@ export default {
     components: { SongListEntry },
     data() {
         return {
-            name: '',
-            artist: '',
-            youtubeLink: '',
+            name: 'マヨイガ',
+            artist: '羊文学',
+            youtubeLink: 'https://www.youtube.com/watch?v=W4TOXpA7ktI',
         }
     },
     props: {
@@ -33,7 +33,9 @@ export default {
         onSongsShouldUpdate: Function,
     },
     methods: {
-        async addSong() {
+        async addSong(event) {
+            event.preventDefault();
+
             const searchParams = new URLSearchParams({
                 name: this.artist,
             });
@@ -48,23 +50,33 @@ export default {
             if (searchJson.exists) {
                 artistId = searchJson.id;
             } else {
-                artistId = await fetch('http://localhost:8081/artists', {
+                const response = await fetch('http://localhost:8081/artists', {
                     method: 'POST',
                     mode: 'cors',
-                    body: {
-                        name: this.artist,
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
                     },
+                    body: JSON.stringify({
+                        name: this.artist,
+                    }),
                 });
+
+                artistId = (await response.json()).id;
             }
 
             await fetch('http://localhost:8081/songs', {
                 method: 'POST',
                 mode: 'cors',
-                body: {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
                     name: this.name,
                     artist_id: artistId,
                     youtube_link: this.youtubeLink,
-                },
+                }),
             });
 
             this.onSongsShouldUpdate();
@@ -83,6 +95,14 @@ export default {
     justify-content: space-between;
 
     border-radius: 0.5em;
+
+    input[type="text"] {
+        width: 30%;
+    }
+
+    input[type="submit"] {
+        width: 7.5%;
+    }
 }
 
 .songList {
