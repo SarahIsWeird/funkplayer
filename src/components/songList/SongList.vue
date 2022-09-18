@@ -40,7 +40,7 @@ export default {
                 name: this.artist,
             });
 
-            const searchResponse = await fetch('http://localhost:8270/artists/search?' + searchParams, {
+            const searchResponse = await fetch(`${process.env.BACKEND_URL}/artists/search?${searchParams}`, {
                 mode: 'cors',
             });
 
@@ -50,7 +50,7 @@ export default {
             if (searchJson.exists) {
                 artistId = searchJson.id;
             } else {
-                const response = await fetch('http://localhost:8270/artists', {
+                const response = await fetch(`${process.env.BACKEND_URL}/artists`, {
                     method: 'POST',
                     mode: 'cors',
                     headers: {
@@ -65,7 +65,7 @@ export default {
                 artistId = (await response.json()).id;
             }
 
-            await fetch('http://localhost:8270/songs', {
+            await fetch(`${process.env.BACKEND_URL}/songs`, {
                 method: 'POST',
                 mode: 'cors',
                 headers: {
