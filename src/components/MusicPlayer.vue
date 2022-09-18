@@ -63,7 +63,7 @@ export default {
             this.$refs.audio.fastSeek(time);
         },
         async updateSongs() {
-            const response = await fetch(`${process.env.BACKEND_URL}/songs`, {
+            const response = await fetch(`${process.env.VUE_APP_BACKEND_URL}/songs`, {
                 mode: 'cors',
             });
 
@@ -89,7 +89,7 @@ export default {
 
             if (song === undefined) return;
 
-            this.$refs.audio.src = `${process.env.BACKEND_URL}/songs/${song.id}/stream`;
+            this.$refs.audio.src = `${process.env.VUE_APP_BACKEND_URL}/songs/${song.id}/stream`;
             this.$refs.audio.volume = this.volume / 100.0;
 
             if (this.pageJustLoaded) {
